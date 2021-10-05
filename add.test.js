@@ -1,6 +1,16 @@
 const { result } = require("lodash");
 
 function strictEquals(a, b) {
+  if (Object.is(a, NaN) && Object.is(NaN, b)) {
+    return false;
+  }
+  if (Object.is(a, 0) && Object.is(-0, b)) {
+    return true;
+  }
+  if (Object.is(a, -0) && Object.is(0, b)) {
+    return true;
+  }
+  return Object.is(a, b);
   return Object.is(a, b);
 }
 
@@ -27,7 +37,7 @@ describe("function compare", function () {
     //Arrange
     const n1 = NaN;
     const n2 = NaN;
-    const expected = true;
+    const expected = false;
 
     //Act
 
@@ -43,7 +53,7 @@ describe("function compare", function () {
     //Arrange
     const n1 = 0;
     const n2 = -0;
-    const expected = false;
+    const expected = true;
 
     //Act
 
@@ -59,7 +69,7 @@ describe("function compare", function () {
     //Arrange
     const n1 = -0;
     const n2 = 0;
-    const expected = false;
+    const expected = true;
 
     //Act
 
